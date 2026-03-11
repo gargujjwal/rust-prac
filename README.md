@@ -284,3 +284,58 @@ mod tests {
 1. In your `src/sheet_1/mod.rs`, add `pub mod q1; pub mod q2; ...` for all ten questions.
 2. In your `src/main.rs`, add `mod sheet_1;`.
 3. Try to solve them without using `.clone()` unless specifically asked—it makes the "Ownership struggle" more educational!
+
+## Practice Sheet 2: Structs, Enums, and Pattern Matching
+
+Now that you've wrestled with the Borrow Checker, let's look at how Rust handles data structures. This sheet is significantly harder.
+
+**Directory Structure:** `src/sheet_2/q1.rs`... (don't forget to update `mod.rs`)
+
+### Question 1: The Result Wrapper
+
+Create a function `divide(a: f64, b: f64) -> Result<f64, String>`. If `b` is 0.0, return an `Err` with a message. In your test, use a `match` statement to assert the value.
+
+- **Goal:** Understand how Rust handles errors without exceptions.
+
+### Question 2: Custom Enum with Data
+
+Define an enum `Shape` that can be `Circle(f64)` or `Rectangle(f64, f64)`. Write a method `area(&self) -> f64` for this enum.
+
+- **Goal:** Learn "Algebraic Data Types" (Enums that hold data).
+
+### Question 3: Pattern Matching and Guards
+
+Write a function `evaluate_age(age: u32) -> &'static str` that uses a `match` block.
+
+- 0-12: "Child"
+- 13-19: "Teen"
+- 20+: "Adult"
+- Add a "match guard" (an `if` inside the match) to return "Golden Year" if the age is exactly 100.
+
+### Question 4: Option Chaining
+
+You have a `struct Profile { nickname: Option<String> }` and a `struct User { profile: Option<Profile> }`. Write a function `get_nickname(user: &User) -> String` that returns the nickname if it exists, otherwise returns "Guest". Use `.and_then()` or `.map()` rather than nested `if let` statements.
+
+### Question 5: Struct Update Syntax
+
+Given a struct `Config` with 5 fields (all `String`), create a function that takes an existing `Config` and returns a new one where only the `api_key` is changed, but all other fields are the same, using the **struct update syntax (`..`)**.
+
+### Question 6: Methods vs Associated Functions
+
+Create a struct `Rectangle`. Implement an **associated function** `new(width: u32, height: u32) -> Rectangle` and a **method** `is_square(&self) -> bool`.
+
+### Question 7: Exhaustive Matching
+
+Create an enum `TrafficLight` with `Red`, `Yellow`, and `Green`. Write a function that returns the "next" light. Ensure that if a new color is added to the enum later, the code won't compile until the function is updated (i.e., don't use `_ =>`).
+
+### Question 8: Destructuring Nested Enums
+
+Create an enum `Message` that has a variant `Move { x: i32, y: i32 }`. Write a function that takes a `Message` and returns the sum of `x` and `y` only if it is a `Move` variant, otherwise return 0. Use `if let`.
+
+### Question 9: The `Copy` Trait on Structs
+
+Create a struct `Point { x: i32, y: i32 }`. Make this struct work with simple assignment (no moving) by deriving the necessary traits. Prove it works in a test where you assign `p1 = p2` and can still use `p2`.
+
+### Question 10: Implementation Blocks for External Types
+
+Can you implement a method for `Vec<i32>` directly in your crate? Explain why or why not (the "Orphan Rule") and provide a workaround using a "Newtype" pattern (a tuple struct wrapping the Vec).
