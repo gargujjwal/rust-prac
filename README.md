@@ -339,3 +339,65 @@ Create a struct `Point { x: i32, y: i32 }`. Make this struct work with simple as
 ### Question 10: Implementation Blocks for External Types
 
 Can you implement a method for `Vec<i32>` directly in your crate? Explain why or why not (the "Orphan Rule") and provide a workaround using a "Newtype" pattern (a tuple struct wrapping the Vec).
+
+## **Practice Sheet 3: Traits, Generics, and Common Traits**
+
+This is where Rust’s "Power User" features live. We’re moving away from data storage and into **behavior**.
+
+### **Question 1: The Basic Trait**
+
+Define a trait `Summary` with a method `summarize(&self) -> String`. Implement this trait for two structs: `NewsArticle` and `Tweet`.
+**File:** `src/sheet_3/q1.rs`
+
+### **Question 2: Default Trait Implementations**
+
+Update your `Summary` trait to have a default implementation: `"Read more..."`. Make it so `NewsArticle` uses the default, but `Tweet` overrides it with the actual tweet content.
+
+### **Question 3: Trait Bounds (Generics)**
+
+Write a function `notify<T: Summary>(item: &T)` that calls the `summarize` method and prints the result. This introduces you to generic constraints.
+**File:** `src/sheet_3/q3.rs`
+
+### **Question 4: Multiple Trait Bounds**
+
+Write a function `compare_and_print<T>(item1: &T, item2: &T)` where `T` must implement both `Summary` AND `PartialEq`. The function should print "They are the same" if they match, otherwise print their summaries. Use the `where` clause syntax for readability.
+
+### **Question 5: Returning Traits (`impl Trait`)**
+
+Write a function `returns_summarizable() -> impl Summary`. Note the restriction: can you return _different_ types (e.g., sometimes a `Tweet`, sometimes an `Article`) using `impl Trait`? (Write your answer in a comment).
+
+### **Question 6: The `Display` and `ToString` Relationship**
+
+Implement the `std::fmt::Display` trait for a struct `Point { x: i32, y: i32 }`. Once implemented, show in a test case that you can now call `.to_string()` on a `Point` even though you didn't explicitly implement `ToString`.
+
+- **Goal:** Understand how the standard library uses "Blanket Implementations."
+
+### **Question 7: Custom Iterator**
+
+Create a struct `Counter` that counts from 1 to 5. Implement the `Iterator` trait for it.
+**File:** `src/sheet_3/q7.rs`
+
+```rust
+pub struct Counter { count: u32 }
+impl Iterator for Counter {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> { /* Your Logic */ }
+}
+
+```
+
+### **Question 8: Generic Data Types**
+
+Create a struct `Wrapper<T>` that holds a value of any type. Implement a method `value(&self) -> &T` and a method `new(val: T) -> Self`.
+
+### **Question 9: From and Into Traits**
+
+Implement `From<i32>` for a struct `Seconds(i32)`. Show that you can now use the `.into()` method to convert an `i32` into a `Seconds` struct. This is the idiomatic way to handle type conversions in Rust.
+
+### **Question 10: Trait Objects (`dyn`)**
+
+This is the "Boss" question of this sheet. Create a `Vec<Box<dyn Summary>>`. Fill it with a mix of `Tweet` and `NewsArticle` instances. Iterate through the vector and call `.summarize()` on each.
+
+- **Goal:** Understand **Dynamic Dispatch** vs. **Static Dispatch**.
+
+---
